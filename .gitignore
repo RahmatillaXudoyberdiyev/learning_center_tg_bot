@@ -1,0 +1,10 @@
+# Ignore MyToken.py
+MyToken.py
+
+# Ignore other typical Python artifacts
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+.env

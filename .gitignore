@@ -1,5 +1,5 @@
 # Ignore MyToken.py
-MyToken.py
+config.py
 
 # Ignore other typical Python artifacts
 *.pyc

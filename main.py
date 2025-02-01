@@ -1,14 +1,15 @@
 from aiogram import Bot, Dispatcher, F
 from asyncio import run 
-from MyToken import API_TOKEN # Your API token
+from config import API_TOKEN # Your API token
 
 
 from aiogram.types import BotCommand
 from aiogram.filters import Command
 from user_side.functions.greetings import start_command_answer
-from user_side.functions.main_section import main_section_function, courses_function, region_show_function, show_course_info, back_from_course, home_action
+from user_side.functions.main_section import main_section_function
 from user_side.states.process_track_state import ProcessTrack
 from user_side.filters.checkCourse import check_in_region, check_in_course, check_in_course_back
+from user_side.functions.list_display_section import courses_function, region_show_function, show_course_info, back_from_course, home_action
 
 dp = Dispatcher()
 

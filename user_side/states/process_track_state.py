@@ -10,6 +10,10 @@ class ProcessTrack(StatesGroup):
 	courses = State()
 	region = State()
 	branch = State()	
+	registration = State()
+	fullname = State()
+	phone_number = State()
+	verification = State()
 	# ... (Keyinchalik qo'shiladi)
 
 # This is a state for 'Ortga, Bosh sahifaga and etc.'

@@ -5,9 +5,11 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 registration_back_button = ReplyKeyboardMarkup(
     keyboard= [
         [
-            KeyboardButton(text = "✍️ Ro'yxatdan o'tish"),
-            KeyboardButton(text = "Ortga")
-        ]
+            KeyboardButton(text = "⏮ Ortga qaytish"),
+            KeyboardButton(text = "✍️ Ro'yxatdan o'tish")
+
+        ],
+        [KeyboardButton(text = "🏠 Bosh sahifaga qaytish")]
     ],
     resize_keyboard = True
 )

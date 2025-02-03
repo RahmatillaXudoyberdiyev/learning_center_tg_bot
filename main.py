@@ -7,14 +7,15 @@ from aiogram.filters import Command
 # Foydalanuvchi qismi funksiyalari
 from user_side.functions.start_section import user_start_command
 from user_side.functions.entry_section import entry_section_function
-from user_side.functions.list_based_section import courses_function, region_show_function, show_course_info
+from user_side.functions.list_based_section import show_course_function, show_region_function, show_branch_function, \
+	show_info, go_back_function
 from user_side.functions.contact_section import about_us_handler,get_contact_info
 from user_side.functions.registration_section import registation_fullname, registation_phone_number, registration_verification, send_info_to_admins
 # Foydalanuvchi qismi statelari
 from user_side.states.process_track_state import ProcessTrack
 
 # Foydalanuvchi qismi filterlari
-from user_side.filters.checkCourse import check_in_region, check_in_course
+from user_side.filters.checker import check_in_region, check_in_course, check_in_branch
 
 # Admin qismi
 from admin_panel.functions.start_section import admin_start_command
@@ -47,24 +48,27 @@ async def main():
 	#Begzod Turdibekov
 
     # Kurslar bo'limi
-	dp.message.register(courses_function, F.text == 'Kurslar')
 	dp.message.register(entry_section_function, F.text == '🏠 Bosh sahifaga qaytish')
 
+
+
     # Ortga tugmalari
-	dp.message.register(entry_section_function, ProcessTrack.courses, F.text == 'Ortga')  # Back to menu
-	dp.message.register(courses_function, ProcessTrack.region, F.text == 'Ortga')  # Back to courses list
-	dp.message.register(region_show_function, ProcessTrack.registration, F.text == 'Ortga')  # Back to region list
+	dp.message.register(go_back_function, ProcessTrack.course, F.text ==  '⏮ Ortga qaytish')  # Back to menu
+	dp.message.register(go_back_function, ProcessTrack.region, F.text == '⏮ Ortga qaytish')  # Back to courses list
+	dp.message.register(go_back_function, ProcessTrack.branch, F.text == '⏮ Ortga qaytish')  # Back to region list
+	dp.message.register(go_back_function, ProcessTrack.info, F.text == '⏮ Ortga qaytish') # Back to brach list
 
     # Kurs tanlash va regionlarni chiqarish
-	dp.message.register(region_show_function, check_in_course())
-	dp.message.register(show_course_info, check_in_region())
-	# dp.message.register(back_from_course, check_in_course_back())
+	dp.message.register(show_course_function, F.text == 'Kurslar')
+	dp.message.register(show_region_function, check_in_course(), ProcessTrack.course)
+	dp.message.register(show_branch_function, check_in_region(), ProcessTrack.region)
+	dp.message.register(show_info, ProcessTrack.branch, F.text != "🔄 Boshidan boshlash")
 
 	# Munisa Akbarovna
 	dp.message.register(registation_fullname, F.text == "✍️ Ro'yxatdan o'tish")
 	dp.message.register(registation_phone_number, ProcessTrack.fullname)
 	dp.message.register(send_info_to_admins, F.text == "✅ Tastiqlash")
-	dp.message.register(show_course_info, F.text == "🔄 Boshidan boshlash")
+	dp.message.register(show_info, F.text == "🔄 Boshidan boshlash")
 	dp.message.register(registration_verification, ProcessTrack.phone_number)
 	
 	# Marjona Sultonova

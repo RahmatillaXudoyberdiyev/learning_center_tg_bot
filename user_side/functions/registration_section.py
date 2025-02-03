@@ -59,5 +59,6 @@ async def send_info_to_admins(message: Message, state: FSMContext):
             print(f"Xatolik yuz berdi admin bilan aloqa o'rnatishda: {e}")
     await message.answer("Adminlarga muvaffaqiyatli jo'naildi")
     await message.answer("Iltimos kerakli menuni tanlang:", reply_markup=menu_buttons)
-    await state.set_state(ProcessTrack.chosen_menu)
     await state.clear()
+    await state.set_state(ProcessTrack.chosen_menu)
+

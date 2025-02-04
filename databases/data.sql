@@ -121,7 +121,6 @@ CREATE TABLE `users` (
 /*!50001 SET character_set_results     = cp850 */;
 /*!50001 SET collation_connection      = cp850_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `course_branch_region` AS select `courses`.`id` AS `id`,`courses`.`name` AS `course_name`,`courses`.`info` AS `course_info`,`branches`.`name` AS `branch_name`,`branches`.`info` AS `branch_info`,`regions`.`name` AS `region_name` from ((`courses` join `branches` on((`branches`.`id` = `courses`.`branch_id`))) join `regions` on((`branches`.`region_id` = `regions`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;

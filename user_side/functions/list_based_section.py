@@ -10,16 +10,21 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 # Info : Kurslar ro'yxatini ko'rsatish uchun
 
 import mysql.connector.pooling
-from config import MySQL_password, MySQL_database
+
+db_config = {
+    "host": "mysql-2d50f4f1-xudoyberdiyevrahmatilla-b900.i.aivencloud.com",
+    "port": 10187,
+    "user": "avnadmin",
+    "password": "AVNS_8pPnOCVBSgx4GU5dG3K",
+    "database": "defaultdb",
+}
 
 connection_pool = mysql.connector.pooling.MySQLConnectionPool(
     pool_name="mypool",
     pool_size=5,
-    user='root',
-    host='localhost',
-    password=MySQL_password,
-    database=MySQL_database
+    **db_config  
 )
+
 
 # Begzod Turdibekov
 # Info : Mavjud kurslarni namoyish etish uchun.

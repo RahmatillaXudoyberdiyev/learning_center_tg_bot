@@ -1,12 +1,13 @@
 import mysql.connector
 
-# Database configuration
+from config import MySQL_password, MySQL_database, MySQL_host, MySQL_port, MySQL_user
+
 db_config = {
-    "host": "mysql-2d50f4f1-xudoyberdiyevrahmatilla-b900.i.aivencloud.com",
-    "port": 10187,
-    "user": "avnadmin",
-    "password": "AVNS_8pPnOCVBSgx4GU5dG3K",
-    "database": "defaultdb",
+    "host": MySQL_host,
+    "port": MySQL_port,
+    "user": MySQL_user,
+    "password": MySQL_password,
+    "database": MySQL_database,
 }
 
 # Connect to the database

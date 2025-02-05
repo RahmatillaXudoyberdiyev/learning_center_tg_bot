@@ -18,7 +18,8 @@ from user_side.states.process_track_state import ProcessTrack
 from user_side.filters.checker import check_in_region, check_in_course, check_in_branch
 
 # Admin qismi
-from admin_panel.functions.start_section import admin_start_command
+from admin_panel.functions.start_section import admin_start_command,send_news
+from admin_panel.functions.function import all_reports,today_reports
 
 from config import API_TOKEN # Sizning API tokeningiz
 from config import ADMIN_IDS
@@ -74,6 +75,12 @@ async def main():
 	# Marjona Sultonova
 	dp.message.register(about_us_handler, F.text == "🗒 Biz haqimizda")
 	dp.message.register(get_contact_info, F.text == "📞 Aloqaga chiqish")
+	#Bahodir Sadullayev
+	dp.message.register(all_reports, F.text == "To'liq xisobot")
+	dp.message.register(today_reports, F.text == "bugun otkanlar")
+	dp.message.register(send_news, F.text == "yangilik jo'natish")
+
+	dp.message.register(admin_start_command)
 
 
 	await bot.set_my_commands([

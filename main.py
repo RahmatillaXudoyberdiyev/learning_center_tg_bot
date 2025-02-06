@@ -44,43 +44,41 @@ async def main():
 	
 	# Rahmatilla Xudoyberdiyev
 	# User uchun kirish qismi (yoxud asosiy qism)
-	dp.message.register(entry_section_function, ProcessTrack.current_language)
+	dp.message.register(entry_section_function, ProcessTrack.current_language, ~F.from_user.id.in_(ADMIN_IDS))
 
 	#Begzod Turdibekov
 
     # Kurslar bo'limi
-	dp.message.register(entry_section_function, F.text == '🏠 Bosh sahifaga qaytish')
+	dp.message.register(entry_section_function, F.text == '🏠 Bosh sahifaga qaytish', ~F.from_user.id.in_(ADMIN_IDS))
 
 
 
     # Ortga tugmalari
-	dp.message.register(go_back_function, ProcessTrack.course, F.text ==  '⏮ Ortga qaytish')  # Back to menu
-	dp.message.register(go_back_function, ProcessTrack.region, F.text == '⏮ Ortga qaytish')  # Back to courses list
-	dp.message.register(go_back_function, ProcessTrack.branch, F.text == '⏮ Ortga qaytish')  # Back to region list
-	dp.message.register(go_back_function, ProcessTrack.info, F.text == '⏮ Ortga qaytish') # Back to brach list
+	dp.message.register(go_back_function, ProcessTrack.course, F.text ==  '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS))  # Back to menu
+	dp.message.register(go_back_function, ProcessTrack.region, F.text == '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS))  # Back to courses list
+	dp.message.register(go_back_function, ProcessTrack.branch, F.text == '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS))  # Back to region list
+	dp.message.register(go_back_function, ProcessTrack.info, F.text == '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS)) # Back to brach list
 
     # Kurs tanlash va regionlarni chiqarish
-	dp.message.register(show_course_function, F.text == 'Kurslar')
-	dp.message.register(show_region_function, check_in_course(), ProcessTrack.course)
-	dp.message.register(show_branch_function, check_in_region(), ProcessTrack.region)
-	dp.message.register(show_info, ProcessTrack.branch, F.text != "🔄 Boshidan boshlash")
+	dp.message.register(show_course_function, F.text == 'Kurslar', ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(show_region_function, check_in_course(), ProcessTrack.course, ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(show_branch_function, check_in_region(), ProcessTrack.region, ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(show_info, ProcessTrack.branch, F.text != "🔄 Boshidan boshlash", ~F.from_user.id.in_(ADMIN_IDS))
 
 	# Munisa Akbarovna
-	dp.message.register(registation_fullname, F.text == "✍️ Ro'yxatdan o'tish")
-	dp.message.register(registation_phone_number, ProcessTrack.fullname)
-	dp.message.register(send_info_to_admins, F.text == "✅ Tastiqlash")
-	dp.message.register(show_info, F.text == "🔄 Boshidan boshlash")
-	dp.message.register(registration_verification, ProcessTrack.phone_number)
+	dp.message.register(registation_fullname, F.text == "✍️ Ro'yxatdan o'tish", ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(registation_phone_number, ProcessTrack.fullname, ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(send_info_to_admins, F.text == "✅ Tastiqlash", ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(show_info, F.text == "🔄 Boshidan boshlash", ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(registration_verification, ProcessTrack.phone_number, ~F.from_user.id.in_(ADMIN_IDS))
 	
 	# Marjona Sultonova
-	dp.message.register(about_us_handler, F.text == "🗒 Biz haqimizda")
-	dp.message.register(get_contact_info, F.text == "📞 Aloqaga chiqish")
+	dp.message.register(about_us_handler, F.text == "🗒 Biz haqimizda", ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(get_contact_info, F.text == "📞 Aloqaga chiqish", ~F.from_user.id.in_(ADMIN_IDS))
 	#Bahodir Sadullayev
-	dp.message.register(all_reports, F.text == "To'liq xisobot")
-	dp.message.register(today_reports, F.text == "bugun otkanlar")
-	dp.message.register(send_news, F.text == "yangilik jo'natish")
-
-	dp.message.register(admin_start_command)
+	dp.message.register(all_reports, F.text == "To'liq xisobot", F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(today_reports, F.text == "bugun otkanlar", F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(send_news, F.text == "yangilik jo'natish", F.from_user.id.in_(ADMIN_IDS))
 
 
 	await bot.set_my_commands([

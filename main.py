@@ -4,6 +4,7 @@ from asyncio import run
 from aiogram.types import BotCommand
 from aiogram.filters import Command
 
+
 # Foydalanuvchi qismi funksiyalari
 from user_side.functions.start_section import user_start_command
 from user_side.functions.entry_section import entry_section_function
@@ -20,6 +21,12 @@ from user_side.filters.checker import check_in_region, check_in_course, check_in
 # Admin qismi
 from admin_panel.functions.start_section import admin_start_command,send_news
 from admin_panel.functions.function import all_reports,today_reports
+from admin_panel.functions.manage_function import show_regions_function, home_action_function, \
+	go_back_function as admin_go_back_function, add_region_function, region_name_confirm_function, \
+	region_name_add_action_function, region_chose_action_function
+from admin_panel.states.process_track_state import ProcessTrack as AdminProcessTrack
+from admin_panel.filters.checker import check_admin_state
+
 
 from config import API_TOKEN # Sizning API tokeningiz
 from config import ADMIN_IDS
@@ -34,13 +41,31 @@ async def main():
 
 	bot = Bot(token = API_TOKEN)
 
+	# admin panel
+	# ------------------------------------------------------------------------------------------------------
+	# Rahmatilla Xudoyberdiyev
+	# Admin uchun start buyrug'i
+	dp.message.register(admin_start_command, Command("start"), F.from_user.id.in_(ADMIN_IDS))
+
+	# Begzod Turdibekov
+	dp.message.register(home_action_function, F.text == "🏠 Bosh sahifaga qaytish", check_admin_state())
+	dp.message.register(admin_go_back_function, F.text == "⏮ Ortga qaytish")
+
+	# Begzod Turdibekov
+	# Manage tugmasi bosilganda regionlar chiqishi
+	dp.message.register(show_regions_function,AdminProcessTrack.chosen_menu, F.text == "⚙ Manage")
+	dp.message.register(add_region_function, AdminProcessTrack.regions, F.text == "➕ Viloyat qo'shish")
+	dp.message.register(region_chose_action_function, AdminProcessTrack.regions)
+	dp.message.register(region_name_confirm_function, AdminProcessTrack.add_region)
+	dp.message.register(region_name_add_action_function, AdminProcessTrack.add_region_name, F.text == "➕ Qo'shish")
+
+	# user panel
+	#----------------------------------------------------------------------------------------------
 	# Marjona Sultonova
 	# User uchun start va til tanlash buyruqlari
 	dp.message.register(user_start_command, Command("start", "lang"), ~F.from_user.id.in_(ADMIN_IDS))
 
-	# Rahmatilla Xudoyberdiyev
-	# Admin uchun start buyrug'i
-	dp.message.register(admin_start_command, Command("start"), F.from_user.id.in_(ADMIN_IDS))
+
 	
 	# Rahmatilla Xudoyberdiyev
 	# User uchun kirish qismi (yoxud asosiy qism)
@@ -50,8 +75,6 @@ async def main():
 
     # Kurslar bo'limi
 	dp.message.register(entry_section_function, F.text == '🏠 Bosh sahifaga qaytish', ~F.from_user.id.in_(ADMIN_IDS))
-
-
 
     # Ortga tugmalari
 	dp.message.register(go_back_function, ProcessTrack.course, F.text ==  '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS))  # Back to menu

@@ -49,7 +49,7 @@ async def main():
 
 	# Begzod Turdibekov
 	dp.message.register(home_action_function, F.text == "🏠 Bosh sahifaga qaytish", check_admin_state())
-	dp.message.register(admin_go_back_function, F.text == "⏮ Ortga qaytish")
+	dp.message.register(admin_go_back_function,F.from_user.id.in_(ADMIN_IDS), F.text == "⏮ Ortga qaytish")
 
 	# Begzod Turdibekov
 	# Manage tugmasi bosilganda regionlar chiqishi

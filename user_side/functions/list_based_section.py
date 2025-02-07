@@ -82,7 +82,7 @@ async def show_region_function(message: Message, state: FSMContext):
 
     try:
         query = connection.cursor()
-        query.execute(f"Select distinct region_name from course_branch_region where course_name = '{course_name}'")  # sql buyrug'i
+        query.execute("SELECT distinct region_name FROM course_branch_region WHERE course_name = %s", (course_name,)) # sql buyrug'i
         button_list = query.fetchall()  # natijalar list ko'rinishida olindi.
         await state.update_data(region_list = button_list, state='region', course_name=course_name)  # kerakli qismlar yoki yangilanadi yoki yangidan saqlanadi.
 
@@ -131,7 +131,8 @@ async def show_branch_function(message: Message, state: FSMContext):
 
     try:
         query = connection.cursor()
-        query.execute(f"Select distinct branch_name from course_branch_region where course_name = '{data['course_name']}' and region_name = '{region_name}'")  # sql buyrug'
+        params = (data['course_name'], region_name)
+        query.execute("SELECT DISTINCT branch_name FROM course_branch_region WHERE course_name = %s AND region_name = %s", params)  # sql buyrug'
         button_list = query.fetchall()  # natijalar list ko'rinishida olindi.
         await state.update_data(branch_list = button_list, state='region', region_name = region_name)  # kerakli qismlar yoki yangilanadi yoki yangidan saqlanadi.
 
@@ -184,7 +185,10 @@ async def show_info(message: Message, state: FSMContext):
     connection = connection_pool.get_connection()
     try:
         query = connection.cursor()  # Create a cursor.
-        query.execute(f"Select course_info, branch_info from course_branch_region where course_name = '{data['course_name']}' and region_name = '{data['region_name']}'")
+
+        params = (data['course_name'], data['region_name'], message.text)
+        query.execute("SELECT course_info, branch_info FROM course_branch_region WHERE course_name = %s AND region_name = %s and branch_name = %s",params)  # sql buyrug'
+
         info = query.fetchall()  # Fetch results.
 
         # Check if info is not empty before accessing its contents.

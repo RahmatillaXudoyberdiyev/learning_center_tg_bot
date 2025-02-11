@@ -11,7 +11,12 @@ class ProcessTrack(StatesGroup):
 	region_chosen = State()
 	add_region = State()
 	add_region_name = State()
-	branches = State() 
+	ask_remove_region = State()
+	remove_region = State()
+	branches = State()
+	ask_remove_branch = State()
+	get_branch_name = State()
+	ask_add_branch_name = State()
 	send_news = State()
 
 	#Extra

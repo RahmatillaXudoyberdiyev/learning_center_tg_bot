@@ -25,12 +25,14 @@ class check_admin_state(Filter):
             return True
         if current_state == ProcessTrack.add_region_name:
             return True
-
         if current_state == ProcessTrack.region_chosen:
             return True
-
         if current_state == ProcessTrack.branches:
             return True
         if current_state == ProcessTrack.send_news:
+            return True
+        if current_state == ProcessTrack.get_branch_name:
+            return True
+        if current_state == ProcessTrack.ask_add_branch_name:
             return True
         return False

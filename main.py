@@ -23,7 +23,9 @@ from admin_panel.functions.start_section import admin_start_command,send_news
 from admin_panel.functions.function import all_reports,today_reports
 from admin_panel.functions.manage_function import show_regions_function, home_action_function, \
 	go_back_function as admin_go_back_function, add_region_function, region_name_confirm_function, \
-	region_name_add_action_function, region_chose_action_function
+	region_name_add_action_function, ask_add_branch_function, show_branches_function as admin_show_branches_function, \
+	admin_get_branch_name, admin_add_branch_function, admin_show_courses_function, admin_ask_remove_region_function, \
+	admin_remove_region_function, admin_ask_remove_branch_function, admin_remove_branch_function
 from admin_panel.states.process_track_state import ProcessTrack as AdminProcessTrack
 from admin_panel.filters.checker import check_admin_state
 
@@ -51,14 +53,26 @@ async def main():
 	dp.message.register(home_action_function, F.text == "🏠 Bosh sahifaga qaytish", check_admin_state())
 	dp.message.register(admin_go_back_function,F.from_user.id.in_(ADMIN_IDS), F.text == "⏮ Ortga qaytish")
 
-	# Begzod Turdibekov
-	# Manage tugmasi bosilganda regionlar chiqishi
-	dp.message.register(show_regions_function,AdminProcessTrack.chosen_menu, F.text == "⚙ Manage")
+
+	dp.message.register(admin_add_branch_function, AdminProcessTrack.ask_add_branch_name, F.text == "➕ Qo'shish")
+
+
+	dp.message.register(admin_ask_remove_region_function, AdminProcessTrack.region_chosen, F.text == "🗑 Viloyatni o'chirish")
+	dp.message.register(admin_remove_region_function, AdminProcessTrack.ask_remove_region, F.text == "🗑 O'chirish")
+	dp.message.register(admin_remove_branch_function, AdminProcessTrack.ask_remove_branch, F.text == "🗑 O'chirish")
+	dp.message.register(admin_ask_remove_branch_function, AdminProcessTrack.courses, F.text == "🗑 Filialni o'chirish")
+
 	dp.message.register(add_region_function, AdminProcessTrack.regions, F.text == "➕ Viloyat qo'shish")
-	dp.message.register(region_chose_action_function, AdminProcessTrack.regions)
+	dp.message.register(ask_add_branch_function, F.text == "➕ Filial qo'shish",AdminProcessTrack.region_chosen)
+
+	dp.message.register(show_regions_function, AdminProcessTrack.chosen_menu, F.text == "⚙ Manage")
+	dp.message.register(admin_get_branch_name, AdminProcessTrack.get_branch_name)
+	dp.message.register(admin_show_branches_function, AdminProcessTrack.regions)
+	dp.message.register(admin_show_courses_function, AdminProcessTrack.region_chosen)
+
+
 	dp.message.register(region_name_confirm_function, AdminProcessTrack.add_region)
 	dp.message.register(region_name_add_action_function, AdminProcessTrack.add_region_name, F.text == "➕ Qo'shish")
-
 	# user panel
 	#----------------------------------------------------------------------------------------------
 	# Marjona Sultonova

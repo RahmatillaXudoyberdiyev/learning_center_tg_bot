@@ -1,8 +1,8 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-button_1 = KeyboardButton(text = "bugun otkanlar")
-button_2 = KeyboardButton(text ="To'liq xisobot")
-button_3 = KeyboardButton(text ="⚙ Manage")
-button_4 = KeyboardButton(text ="yangilik jo'natish")
+button_1 = KeyboardButton(text = "Bugun o'tganlar")
+button_2 = KeyboardButton(text = "To'liq hisobot")
+button_3 = KeyboardButton(text = "⚙ Manage")
+button_4 = KeyboardButton(text = "Yangilik jo'natish")
 keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -15,7 +15,7 @@ keyboard = ReplyKeyboardMarkup(
     resize_keyboard = True
 
 )
-button_7 = KeyboardButton(text="tasdiqlash ✅")
+button_7 = KeyboardButton(text="Tasdiqlash ✅")
 button_8 = KeyboardButton(text="❌ Bekor qilish")
 keyboard1 = ReplyKeyboardMarkup(
     keyboard=[

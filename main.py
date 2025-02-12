@@ -19,7 +19,7 @@ from user_side.states.process_track_state import ProcessTrack
 from user_side.filters.checker import check_in_region, check_in_course, check_in_branch
 
 # Admin qismi
-from admin_panel.functions.start_section import admin_start_command,send_news
+from admin_panel.functions.start_section import admin_start_command,send_news, process_send_news
 from admin_panel.functions.function import all_reports,today_reports
 from admin_panel.functions.manage_function import show_regions_function, home_action_function, \
 	go_back_function as admin_go_back_function, add_region_function, region_name_confirm_function, \
@@ -70,9 +70,15 @@ async def main():
 	dp.message.register(admin_show_branches_function, AdminProcessTrack.regions)
 	dp.message.register(admin_show_courses_function, AdminProcessTrack.region_chosen)
 
-
 	dp.message.register(region_name_confirm_function, AdminProcessTrack.add_region)
 	dp.message.register(region_name_add_action_function, AdminProcessTrack.add_region_name, F.text == "➕ Qo'shish")
+
+	#Bahodir Sadullayev
+	dp.message.register(all_reports, F.text == "To'liq hisobot", F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(today_reports, F.text == "Bugun o'tganlar", F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(send_news, F.text == "Yangilik jo'natish", F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(process_send_news, AdminProcessTrack.send_news, F.from_user.id.in_(ADMIN_IDS))
+
 	# user panel
 	#----------------------------------------------------------------------------------------------
 	# Marjona Sultonova
@@ -112,10 +118,6 @@ async def main():
 	# Marjona Sultonova
 	dp.message.register(about_us_handler, F.text == "🗒 Biz haqimizda", ~F.from_user.id.in_(ADMIN_IDS))
 	dp.message.register(get_contact_info, F.text == "📞 Aloqaga chiqish", ~F.from_user.id.in_(ADMIN_IDS))
-	#Bahodir Sadullayev
-	dp.message.register(all_reports, F.text == "To'liq xisobot", F.from_user.id.in_(ADMIN_IDS))
-	dp.message.register(today_reports, F.text == "bugun otkanlar", F.from_user.id.in_(ADMIN_IDS))
-	dp.message.register(send_news, F.text == "yangilik jo'natish", F.from_user.id.in_(ADMIN_IDS))
 
 
 	await bot.set_my_commands([

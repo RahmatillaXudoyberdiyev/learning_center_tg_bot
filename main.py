@@ -29,6 +29,16 @@ from admin_panel.functions.manage_function import show_regions_function, home_ac
 from admin_panel.states.process_track_state import ProcessTrack as AdminProcessTrack
 from admin_panel.filters.checker import check_admin_state
 
+from admin_panel.functions.manage_function import (
+    ask_add_course_function,
+    admin_get_course_name,
+    admin_add_course_function,
+    admin_ask_remove_course_function,
+    admin_remove_course_function,
+	ask_update_course_info_function,
+    admin_update_course_info_function,
+    ask_update_branch_info_function, admin_update_branch_info_function
+)
 
 from config import API_TOKEN # Sizning API tokeningiz
 from config import ADMIN_IDS
@@ -49,6 +59,7 @@ async def main():
 	# Admin uchun start buyrug'i
 	dp.message.register(admin_start_command, Command("start"), F.from_user.id.in_(ADMIN_IDS))
 
+
 	# Begzod Turdibekov
 	dp.message.register(home_action_function, F.text == "🏠 Bosh sahifaga qaytish", check_admin_state())
 	dp.message.register(admin_go_back_function,F.from_user.id.in_(ADMIN_IDS), F.text == "⏮ Ortga qaytish")
@@ -56,6 +67,16 @@ async def main():
 
 	dp.message.register(admin_add_branch_function, AdminProcessTrack.ask_add_branch_name, F.text == "➕ Qo'shish")
 
+
+	dp.message.register(
+        ask_update_branch_info_function,
+        AdminProcessTrack.courses,
+        F.text == "✏️ Filial info qo'shish"
+    )
+	dp.message.register(
+        admin_update_branch_info_function,
+        AdminProcessTrack.get_branch_info
+    )
 
 	dp.message.register(admin_ask_remove_region_function, AdminProcessTrack.region_chosen, F.text == "🗑 Viloyatni o'chirish")
 	dp.message.register(admin_remove_region_function, AdminProcessTrack.ask_remove_region, F.text == "🗑 O'chirish")
@@ -72,6 +93,21 @@ async def main():
 
 	dp.message.register(region_name_confirm_function, AdminProcessTrack.add_region)
 	dp.message.register(region_name_add_action_function, AdminProcessTrack.add_region_name, F.text == "➕ Qo'shish")
+
+
+
+
+
+
+	dp.message.register(ask_add_course_function, AdminProcessTrack.courses, F.text == "➕ Kurs qo'shish")
+	dp.message.register(admin_get_course_name, AdminProcessTrack.get_course_name)
+	dp.message.register(admin_add_course_function, AdminProcessTrack.ask_add_course_confirm, F.text == "➕ Qo'shish")
+	dp.message.register(admin_ask_remove_course_function, AdminProcessTrack.courses)
+	dp.message.register(admin_remove_course_function, AdminProcessTrack.ask_remove_course, F.text == "🗑 O'chirish")
+
+	dp.message.register(ask_update_course_info_function, AdminProcessTrack.ask_remove_course, F.text == "✏️ Kurs info qo'shish")
+	dp.message.register(admin_update_course_info_function, AdminProcessTrack.get_course_info)
+
 
 	#Bahodir Sadullayev
 	dp.message.register(all_reports, F.text == "To'liq hisobot", F.from_user.id.in_(ADMIN_IDS))

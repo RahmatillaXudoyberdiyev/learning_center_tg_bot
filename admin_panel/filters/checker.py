@@ -34,5 +34,8 @@ class check_admin_state(Filter):
         if current_state == ProcessTrack.get_branch_name:
             return True
         if current_state == ProcessTrack.ask_add_branch_name:
+            return True        
+        if current_state == ProcessTrack.get_branch_info:
             return True
+
         return False

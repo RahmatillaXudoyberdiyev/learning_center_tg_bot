@@ -212,7 +212,7 @@ async def ask_add_branch_function(message : Message, state : FSMContext):
 # Info : "⚙ Manage" + "Chosen region" + "➕ Filial qo'shis" + "get_branch_name" | Filial nomini olish
 
 async def admin_get_branch_name(message : Message, state : FSMContext):
-    print("'⚙ Manage' -> 'Chosen region' -> '➕ Filial qo'shis' -> 'admin_get_branch_name()'")
+    print("'⚙ Manage' -> 'Chosen region' -> '➕ Filial qo'shish' -> 'admin_get_branch_name()'")
     await state.set_state(ProcessTrack.ask_add_branch_name)
 
     buttons = ReplyKeyboardBuilder()
@@ -286,6 +286,56 @@ async def admin_show_courses_function(message : Message, state : FSMContext):
         # Finallydagi close yetadi
     finally:
         connection.close()
+
+# ------------------------------------------
+
+# Rahmatilla Xudoyberdiyev
+
+async def ask_update_branch_info_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> '✏️ Filial info qo'shish'")
+
+    await state.set_state(ProcessTrack.get_branch_info)
+    
+    buttons = ReplyKeyboardBuilder()
+    buttons.row(
+        KeyboardButton(text='⏮ Ortga qaytish'),
+        KeyboardButton(text="🏠 Bosh sahifaga qaytish")
+    )
+    
+    await message.answer(
+        "Iltimos filial uchun yangilangan ma'lumotni kiriting:",
+        reply_markup=buttons.as_markup(resize_keyboard=True)
+    )
+
+async def admin_update_branch_info_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> '✏️ Filial info qo'shish' -> 'admin_update_branch_info_function()'")
+    data = await state.get_data()
+    new_info = message.text
+
+
+    branch_id = data.get('admin_branch_list', {}).get(data.get('admin_branch_name'))
+    if not branch_id:
+        await message.answer("Filial topilmadi!")
+        return
+
+    connection = connection_pool.get_connection()
+    try:
+        query = connection.cursor()
+        query.execute("UPDATE branches SET info = %s WHERE id = %s", (new_info, branch_id))
+        connection.commit()
+        await message.answer("Filial ma'lumotlari muvaffaqiyatli yangilandi!")
+
+        await admin_show_courses_function(message, state)
+    except mysql.connector.Error as err:
+        print(err)
+    finally:
+        connection.close()
+
+# --------------------------------------------------------
+
+
+
+
 # Begzod Turdibekov
 # Info : kurslar uchun button yasab beruvchi funksiya
 async def admin_show_courses_function_btn(button_list):
@@ -301,8 +351,16 @@ async def admin_show_courses_function_btn(button_list):
 
     # "Ortga" va "Home" tugmalari
 
-    buttons.row(KeyboardButton(text="🗑 Filialni o'chirish"), KeyboardButton(text="➕ Kurs qo'shish"))
-    buttons.row(KeyboardButton(text='⏮ Ortga qaytish'), KeyboardButton(text="🏠 Bosh sahifaga qaytish"))
+    buttons.row(
+        KeyboardButton(text="✏️ Filial info qo'shish"),
+        KeyboardButton(text="🗑 Filialni o'chirish"),
+        KeyboardButton(text="➕ Kurs qo'shish")
+    )
+    buttons.row(
+        KeyboardButton(text='⏮ Ortga qaytish'),
+        KeyboardButton(text="🏠 Bosh sahifaga qaytish")
+    )
+
     return buttons.as_markup(resize_keyboard=True)  # tugmalar markup holatiga o'tkazilib jo'natib yuborilayapti.
 
 
@@ -382,37 +440,218 @@ async def admin_remove_branch_function(message : Message, state : FSMContext):
     finally:
         connection.close()
 
+# ------------------------------------------------------------------------
+
+# Rahmatilla Xudoyberdiye
+# Courses section
+
+# Info : "➕ Kurs qo'shish" | Tanlangan filial uchun yangi kurs qo'shish uchun kurs nomini so'raydi.
+async def ask_add_course_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> '➕ Kurs qo'shish'")
+    await state.set_state(ProcessTrack.get_course_name)
+    buttons = ReplyKeyboardBuilder()
+    buttons.row(KeyboardButton(text='⏮ Ortga qaytish'), KeyboardButton(text="🏠 Bosh sahifaga qaytish"))
+    await message.answer(
+        text="Iltimos kurs nomini kiriting!",
+        reply_markup=buttons.as_markup(resize_keyboard=True)
+    )
+
+# Info : "➕ Kurs qo'shish" -> Kirilgan kurs nomini tasdiqlash so'rovi.
+async def admin_get_course_name(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> '➕ Kurs qo'shish' -> 'admin_get_course_name()'")
+    await state.set_state(ProcessTrack.ask_add_course_confirm)
+    buttons = ReplyKeyboardBuilder()
+    buttons.button(text="➕ Qo'shish")
+    buttons.row(KeyboardButton(text='⏮ Ortga qaytish'), KeyboardButton(text="🏠 Bosh sahifaga qaytish"))
+    await state.update_data(admin_input_course_name=message.text)
+    await message.answer(
+        f"Siz kiritgan kurs nomi <b>{message.text}</b>!\nUshbu kursni qo'shishni xohlaysizmi?",
+        reply_markup=buttons.as_markup(resize_keyboard=True),
+        parse_mode="HTML"
+    )
+
+# Info : "➕ Kurs qo'shish" -> Tasdiqlangandan so'ng kursni ma'lumotlar bazasiga qo'shadi.
+async def admin_add_course_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> '➕ Kurs qo'shish' -> 'admin_add_course_function()'")
+    data = await state.get_data()
+    connection = connection_pool.get_connection()
+    try:
+        query = connection.cursor()
+        branch_name = data['admin_branch_name']
+        branch_id = data['admin_branch_list'][branch_name]
+        input_course_name = data['admin_input_course_name']
+        # Kurs uchun qo'shimcha ma'lumot hozircha standart qiymat sifatida berildi.
+        course_info = "Yangi kurs ma'lumoti"
+        query.execute(
+            "INSERT INTO courses (name, branch_id, info) VALUES (%s, %s, %s);",
+            (input_course_name, branch_id, course_info)
+        )
+        connection.commit()
+        buttons = ReplyKeyboardBuilder()
+        buttons.row(KeyboardButton(text='⏮ Ortga qaytish'), KeyboardButton(text="🏠 Bosh sahifaga qaytish"))
+        await message.answer(
+            "Kurs muaffaqiyatli qo'shildi! ✅",
+            reply_markup=buttons.as_markup(resize_keyboard=True)
+        )
+        # Kurslar ro'yxatini yangilash:
+        await admin_show_courses_function(message, state)
+    except mysql.connector.Error as err:
+        print(err)
+    finally:
+        connection.close()
+
+# Info : "Kurs" | Agar admin mavjud kurs tugmasini bossagina, kursni o'chirishni so'raydi.
+async def admin_ask_remove_course_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> 'Chosen Course' -> 'Kursni boshqarish'")
+    await state.set_state(ProcessTrack.ask_remove_course)
+    data = await state.get_data()
+    course_name = message.text
+    course_info = ""
+    if course_name in data.get('admin_course_list', {}):
+        course_info = data['admin_course_list'][course_name]['info']
+    info = (
+        f"Kurs: <b>{course_name}</b>\n"
+        f"Ma'lumot: {course_info}\n"
+        "Ushbu kursni o'chirish yoki ma'lumotini yangilashni xohlaysizmi?"
+    )
+    buttons = ReplyKeyboardBuilder()
+    buttons.row(
+        KeyboardButton(text="⏮ Ortga qaytish"),
+        KeyboardButton(text="🗑 O'chirish")
+    )
+    # NEW: Button to update course info
+    buttons.row(KeyboardButton(text="✏️ Kurs info qo'shish"))
+    await state.update_data(admin_course_name=course_name)
+    await message.answer(
+        info,
+        parse_mode="HTML",
+        reply_markup=buttons.as_markup(resize_keyboard=True)
+    )
+# Info : "Kurs" | Kurs o'chirishni tasdiqlagach, uni ma'lumotlar bazasidan o'chiradi.
+async def admin_remove_course_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> 'Chosen Course' -> '🗑 Kursni o'chirish' -> '🗑 O'chirish'")
+    data = await state.get_data()
+    connection = connection_pool.get_connection()
+    try:
+        query = connection.cursor()
+        branch_id = data['admin_branch_list'][data['admin_branch_name']]
+        course_data = data['admin_course_list'].get(data['admin_course_name'])
+        if not course_data:
+            await message.answer("Kurs topilmadi!")
+            return
+        course_id = course_data['id']
+        query.execute("DELETE FROM courses WHERE id = %s AND branch_id = %s", (course_id, branch_id))
+        connection.commit()
+        await message.answer(
+            f"<b>{data['admin_course_name']}</b> kursi muaffaqiyatli o'chirildi!",
+            parse_mode="HTML"
+        )
+        await state.update_data(admin_course_name=None)
+        # Kurslar ro'yxatini yangilash:
+        await admin_show_courses_function(message, state)
+    except mysql.connector.Error as err:
+        print(err)
+    finally:
+        connection.close()
+
+async def ask_update_course_info_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> '✏️ Kurs info qo'shish'")
+    # Here we use a new state to capture course info update.
+    await state.set_state(ProcessTrack.get_course_info)
+    buttons = ReplyKeyboardBuilder()
+    buttons.row(
+        KeyboardButton(text='⏮ Ortga qaytish'),
+        KeyboardButton(text="🏠 Bosh sahifaga qaytish")
+    )
+    await message.answer(
+        "Iltimos kurs uchun yangilangan ma'lumotni kiriting:",
+        reply_markup=buttons.as_markup(resize_keyboard=True)
+    )
+
+async def admin_update_course_info_function(message: Message, state: FSMContext):
+    print("'⚙ Manage' -> 'Chosen Branch' -> '✏️ Kurs info qo'shish' -> 'admin_update_course_info_function()'")
+    data = await state.get_data()
+    new_info = message.text
+    course_data = data.get('admin_course_list', {}).get(data.get('admin_course_name'))
+    if not course_data:
+        await message.answer("Kurs topilmadi!")
+        return
+    course_id = course_data['id']
+    connection = connection_pool.get_connection()
+    try:
+        query = connection.cursor()
+        query.execute("UPDATE courses SET info = %s WHERE id = %s", (new_info, course_id))
+        connection.commit()
+        await message.answer("Kurs ma'lumotlari muvaffaqiyatli yangilandi!")
+        await admin_show_courses_function(message, state)
+    except mysql.connector.Error as err:
+        print(err)
+    finally:
+        connection.close()
+
+
+
+# -------------------------------------------------------------------------
 # Begzod Turdibekov
 # info : "⏮ Ortga qaytish" | Ortga qaytish uchun ishlatiladi.
-async def go_back_function(message : Message, state : FSMContext):
-    current_state = await state.get_state() # hozirgi ishlatilayotgan state yuklab olinayapti.
+async def go_back_function(message: Message, state: FSMContext):
+    current_state = await state.get_state()  # hozirgi ishlatilayotgan state yuklab olinayapti.
 
-    # Har bir
+    # Agar viloyatlar ro'yxatida bo'lsa
     if current_state == ProcessTrack.regions:
         await admin_start_command(message, state)
-        await state.update_data(admin_region_list = dict())
-    if current_state == ProcessTrack.add_region:
+        await state.update_data(admin_region_list=dict())
+
+    # Agar yangi viloyat qo'shish bosqichida bo'lsa
+    elif current_state == ProcessTrack.add_region:
         await show_regions_function(message, state)
 
-
-    if current_state == ProcessTrack.add_region_name:
+    # Agar viloyat nomini tasdiqlash bosqichida bo'lsa
+    elif current_state == ProcessTrack.add_region_name:
         await add_region_function(message, state)
 
-    if current_state == ProcessTrack.region_chosen:
+    # Agar tanlangan viloyat bosqichida bo'lsa
+    elif current_state == ProcessTrack.region_chosen:
         await show_regions_function(message, state)
-        await state.update_data(admin_region_name = None, admin_branch_list = dict())
+        await state.update_data(admin_region_name=None, admin_branch_list=dict())
 
-    if current_state == ProcessTrack.get_branch_name or current_state == ProcessTrack.ask_add_branch_name:
+    # Agar filial nomi kiritish yoki qo'shish bosqichida bo'lsa
+    elif current_state == ProcessTrack.get_branch_name or current_state == ProcessTrack.ask_add_branch_name:
         await show_branches_function(message, state)
 
-    if current_state == ProcessTrack.courses:
+    # Agar kurslar bosqichida yoki filialdagi kurslar ko'rsatilayotgan bo'lsa
+    elif current_state == ProcessTrack.courses:
         await state.update_data(admin_branch_name=None, admin_courses_list=dict())
         await show_branches_function(message, state)
-    if current_state == ProcessTrack.ask_remove_region:
+
+    # Agar viloyatni o'chirishni so'rayotgan bosqichida bo'lsa
+    elif current_state == ProcessTrack.ask_remove_region:
         await show_branches_function(message, state)
-    if current_state == ProcessTrack.ask_remove_branch:
+
+    # Agar filialni o'chirishni so'rayotgan bosqichida bo'lsa
+    elif current_state == ProcessTrack.ask_remove_branch:
         await admin_show_courses_function(message, state)
 
+    # --- NEW: Courses Section Go-Back Conditions ---
+    # Agar admin yangi kurs nomini kiritayotgan bosqichida bo'lsa
+    elif current_state == ProcessTrack.get_course_name:
+        await admin_show_courses_function(message, state)
+
+    # Agar admin kurs qo'shish tasdiqini kutayotgan bosqichida bo'lsa
+    elif current_state == ProcessTrack.ask_add_course_confirm:
+        await admin_show_courses_function(message, state)
+
+    # Agar admin kursni o'chirishni tasdiqlayotgan bosqichida bo'lsa
+    elif current_state == ProcessTrack.ask_remove_course:
+        await admin_show_courses_function(message, state)
+
+    # Agar admin kursni tahrirlash bosqichida bo'lsa
+    elif current_state == ProcessTrack.get_course_info:
+        await admin_show_courses_function(message, state)
+
+    # Agar admin filialni tahrirlash bosqichida bo'lsa
+    elif current_state == ProcessTrack.get_branch_info:
+        await admin_show_courses_function(message, state)
 
 
 # Begzod Turdibekov

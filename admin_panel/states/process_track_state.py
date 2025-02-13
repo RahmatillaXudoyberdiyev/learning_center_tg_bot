@@ -18,7 +18,11 @@ class ProcessTrack(StatesGroup):
 	get_branch_name = State()
 	ask_add_branch_name = State()
 	send_news = State()
-
+	get_course_name = State()          
+	ask_add_course_confirm = State()     
+	ask_remove_course = State()   
+	get_course_info = State()
+	get_branch_info = State()
 	#Extra
 	regions_list = {
 		"Andijon",

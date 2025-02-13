@@ -172,36 +172,35 @@ async def create_branch_list_buttons(button_list, state: FSMContext):
 # Info : Kurs va filyal bo'yicha ma'lumotlarni chiqarish
 
 async def show_info(message: Message, state: FSMContext):
-    # Region qo'shilganda state larni ishlatilinish o'rni bir to'g'irlab chilinadi
     await state.set_state(ProcessTrack.info)
-
-
-    data = await state.get_data()  # Get state data.
+    data = await state.get_data()
     branch_name = message.text
     if data.get('branch_name'):
         branch_name = data['branch_name']
-    await state.update_data(branch_name = branch_name)
-
+    await state.update_data(branch_name=branch_name)
     connection = connection_pool.get_connection()
     try:
-        query = connection.cursor()  # Create a cursor.
-
-        params = (data['course_name'], data['region_name'], message.text)
-        query.execute("SELECT course_info, branch_info FROM course_branch_region WHERE course_name = %s AND region_name = %s and branch_name = %s",params)  # sql buyrug'
-
-        info = query.fetchall()  # Fetch results.
-
-        # Check if info is not empty before accessing its contents.
+        query = connection.cursor()
+        params = (data['course_name'], data['region_name'], branch_name)
+        query.execute(
+            "SELECT course_info, branch_info FROM course_branch_region WHERE course_name = %s AND region_name = %s AND branch_name = %s", 
+            params
+        )
+        info = query.fetchall()
         if info and info[0]:
-            await message.answer(text = await create_str_from_list(state) + f"<b>{data['course_name']}</b> ➡ <b>{data['region_name']}</b> ➡ <b>{branch_name}</b>", reply_markup=registration_back_button, parse_mode = "HTML")
+            text = await create_str_from_list(state) + \
+                   f"<b>{data['course_name']}</b> ➡ <b>{data['region_name']}</b> ➡ <b>{branch_name}</b>\n\n" + \
+                   f"<b>Kurs ma'lumoti:</b> {info[0][0]}\n" + \
+                   f"<b>Filial ma'lumoti:</b> {info[0][1]}"
+            await message.answer(text=text, reply_markup=registration_back_button, parse_mode="HTML")
         else:
             await message.answer("Ma'lumot topilmadi.", reply_markup=registration_back_button)
-        await state.update_data(state=None)  # Reset the state.
-
-    except mysql.connector.Error as err:  # Handle any database errors.
+        await state.update_data(state=None)
+    except mysql.connector.Error as err:
         print(err)
     finally:
         connection.close()
+
 
 
 # # Begzod Turdibekov

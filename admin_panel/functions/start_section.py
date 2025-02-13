@@ -42,13 +42,17 @@ async def process_send_news(message: Message, state: FSMContext):
         await state.clear()  
         return
 
-    user_ids = [user[0] for user in users]
+    user_ids = set(user[0] for user in users)
 
     successful_sends = 0
     failed_sends = 0
     for user_id in user_ids:
         try:
-            await message.bot.send_message(user_id, message.text)
+            await message.bot.copy_message(
+                chat_id=user_id,
+                from_chat_id=message.chat.id,
+                message_id=message.message_id
+            )
             successful_sends += 1
         except Exception:
             failed_sends += 1

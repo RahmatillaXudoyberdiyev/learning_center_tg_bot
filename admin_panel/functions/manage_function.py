@@ -643,6 +643,7 @@ async def go_back_function(message: Message, state: FSMContext):
 
     # Agar admin kursni o'chirishni tasdiqlayotgan bosqichida bo'lsa
     elif current_state == ProcessTrack.ask_remove_course:
+        await state.update_data(admin_course_name = None)
         await admin_show_courses_function(message, state)
 
     # Agar admin kursni tahrirlash bosqichida bo'lsa

@@ -1,0 +1,123 @@
+{
+    "course_list_label": {
+        "uzbek": "Kurslar ro'yxati :",
+        "russian": "Список курсов :",
+        "english": "Course list :"
+    },
+    "registration_buttons": {
+        "uzbek": {
+            "back": "⏮ Ortga qaytish",
+            "register": "✍️ Ro'yxatdan o'tish",
+            "home": "🏠 Bosh sahifaga qaytish"
+        },
+        "russian": {
+            "back": "⏮ Назад",
+            "register": "✍️ Регистрация",
+            "home": "🏠 Вернуться на главную"
+        },
+        "english": {
+            "back": "⏮ Back",
+            "register": "✍️ Register",
+            "home": "🏠 Return to home"
+        }
+    },
+    "course_buttons": {
+        "uzbek": {
+            "back": "⏮ Ortga qaytish",
+            "home": "🏠 Bosh sahifaga qaytish"
+        },
+        "russian": {
+            "back": "⏮ Назад",
+            "home": "🏠 Вернуться на главную"
+        },
+        "english": {
+            "back": "⏮ Back",
+            "home": "🏠 Return to home"
+        }
+	},
+	"region_labels": {
+        "uzbek": {
+            "available_regions": "kursi mavjud bo'lgan viloyatlar!"
+        },
+        "russian": {
+            "available_regions": "курс доступен в следующих регионах!"
+        },
+        "english": {
+            "available_regions": "course is available in the following regions!"
+        }
+    },
+	"region_buttons": {
+        "uzbek": {
+            "back": "⏮ Ortga qaytish",
+            "home": "🏠 Bosh sahifaga qaytish"
+        },
+        "russian": {
+            "back": "⏮ Назад",
+            "home": "🏠 Вернуться на главную"
+        },
+        "english": {
+            "back": "⏮ Back",
+            "home": "🏠 Return to Home"
+        }
+    }, 
+    "branch_buttons": {
+        "uzbek": {
+            "back": "⏮ Ortga qaytish",
+            "home": "🏠 Bosh sahifaga qaytish"
+        },
+        "russian": {
+            "back": "⏮ Назад",
+            "home": "🏠 Вернуться на главную"
+        },
+        "english": {
+            "back": "⏮ Back",
+            "home": "🏠 Return to Home"
+        }
+    }, 
+    "info_labels": {
+        "uzbek": {
+            "course_info": "Kurs ma'lumoti",
+            "branch_info": "Filial ma'lumoti",
+            "not_found": "Ma'lumot topilmadi."
+        },
+        "russian": {
+            "course_info": "Информация о курсе",
+            "branch_info": "Информация о филиале",
+            "not_found": "Информация не найдена."
+        },
+        "english": {
+            "course_info": "Course Information",
+            "branch_info": "Branch Information",
+            "not_found": "Information not found."
+        }
+    },
+    "user_info_labels": {
+        "uzbek": {
+            "course": "Kurs",
+            "region": "Viloyat",
+            "branch": "Filial"
+        },
+        "russian": {
+            "course": "Курс",
+            "region": "Регион",
+            "branch": "Филиал"
+        },
+        "english": {
+            "course": "Course",
+            "region": "Region",
+            "branch": "Branch"
+        }
+    },
+    "branch_labels": {
+        "uzbek": {
+            "available_branches": "Mavjud filyallar"
+        },
+        "russian": {
+            "available_branches": "Доступные филиалы"
+        },
+        "english": {
+            "available_branches": "Available branches"
+        }
+    }
+
+}

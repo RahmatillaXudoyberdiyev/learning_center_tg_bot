@@ -1,11 +1,15 @@
-from aiogram.types import ReplyKeyboardMarkup,KeyboardButton 
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from user_side.translations.translation_functions import translate_into
 
-tastiqlash_tugmasi=ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(text="✅ Tastiqlash"),
-            KeyboardButton(text="🔄 Boshidan boshlash")
-        ]
-    ],
-    resize_keyboard=True
-)
+def get_confirmation_keyboard(data):
+    translations = translate_into("./user_side/translations/registration_translations.json", data, "confirmation_buttons")
+
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=translations["confirm"]),
+                KeyboardButton(text=translations["restart"])
+            ]
+        ],
+        resize_keyboard=True
+    )

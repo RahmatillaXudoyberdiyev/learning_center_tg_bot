@@ -1,15 +1,18 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from user_side.translations.translation_functions import translate_into
 
 # Begzod Turdibekov
-# Info : Kurlar ro'yxati tushganda 
-registration_back_button = ReplyKeyboardMarkup(
-    keyboard= [
-        [
-            KeyboardButton(text = "⏮ Ortga qaytish"),
-            KeyboardButton(text = "✍️ Ro'yxatdan o'tish")
+# Info: Kurslar ro'yxati tushganda
+def get_registration_back_keyboard(data):
+    translations = translate_into("./user_side/translations/list_based_translations.json", data, "registration_buttons")
 
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=translations["back"]),
+                KeyboardButton(text=translations["register"])
+            ],
+            [KeyboardButton(text=translations["home"])]
         ],
-        [KeyboardButton(text = "🏠 Bosh sahifaga qaytish")]
-    ],
-    resize_keyboard = True
-)
+        resize_keyboard=True
+    )

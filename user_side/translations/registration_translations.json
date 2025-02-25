@@ -1,0 +1,83 @@
+{
+    "confirmation_buttons": {
+        "uzbek": {
+            "confirm": "✅ Tasdiqlash",
+            "restart": "🔄 Boshidan boshlash"
+        },
+        "russian": {
+            "confirm": "✅ Подтвердить",
+            "restart": "🔄 Начать заново"
+        },
+        "english": {
+            "confirm": "✅ Confirm",
+            "restart": "🔄 Restart"
+        }
+    },
+"registration_messages": {
+        "uzbek": {
+            "enter_fullname": "Ro'yxatdan o'tish uchun ism-familiyangizni kiriting\nNamuna: Xoliyorova Munisa",
+            "enter_phone": "Telefon raqamingizni kiriting\nNamuna: 995673412",
+            "fullname_error": "Faqat ism va familiyangizni kiriting:",
+            "confirm_info": "Ma'lumotlaringizni tasdiqlang:",
+            "fullname": "Ism familiya",
+            "phone_number": "Telefon raqam",
+            "course": "Kurs",
+            "branch": "Fillial",
+            "invalid_phone": "Iltimos, telefon raqamini to'g'ri formatda kiriting\nNamuna: 997452346"
+        },
+        "russian": {
+            "enter_fullname": "Введите ваше имя и фамилию для регистрации\nПример: Халилова Мадина",
+            "enter_phone": "Введите ваш номер телефона\nПример: 995673412",
+            "fullname_error": "Введите только имя и фамилию:",
+            "confirm_info": "Подтвердите ваши данные:",
+            "fullname": "Имя и фамилия",
+            "phone_number": "Номер телефона",
+            "course": "Курс",
+            "branch": "Филиал",
+            "invalid_phone": "Пожалуйста, введите номер телефона в правильном формате\nПример: 997452346"
+        },
+        "english": {
+            "enter_fullname": "Enter your full name for registration\nExample: Khalilova Madina",
+            "enter_phone": "Enter your phone number\nExample: 995673412",
+            "fullname_error": "Please enter only your first and last name:",
+            "confirm_info": "Confirm your details:",
+            "fullname": "Full Name",
+            "phone_number": "Phone Number",
+            "course": "Course",
+            "branch": "Branch",
+            "invalid_phone": "Please enter a valid phone number format\nExample: 997452346"
+        }
+    },
+	"entry_labels": {
+        "uzbek": {
+            "new_registration": "📌 Yangi ro‘yxatdan o‘tgan foydalanuvchi:",
+            "fullname": "Ism familiya",
+            "phone_number": "Telefon raqam",
+            "course": "Kurs",
+            "branch": "Fillial",
+            "sent_to_admins": "✅ Ma'lumot adminlarga jo‘natildi.",
+            "course_or_branch_not_found": "❌ Kechirasiz, kurs yoki filial topilmadi.",
+            "admin_error": "⚠️ Admin bilan aloqa o‘rnatishda xatolik:"
+        },
+        "russian": {
+            "new_registration": "📌 Новый зарегистрированный пользователь:",
+            "fullname": "Имя и фамилия",
+            "phone_number": "Номер телефона",
+            "course": "Курс",
+            "branch": "Филиал",
+            "sent_to_admins": "✅ Данные успешно отправлены администраторам.",
+            "course_or_branch_not_found": "❌ Извините, курс или филиал не найден.",
+            "admin_error": "⚠️ Ошибка при отправке администратору:"
+        },
+        "english": {
+            "new_registration": "📌 New registered user:",
+            "fullname": "Full Name",
+            "phone_number": "Phone Number",
+            "course": "Course",
+            "branch": "Branch",
+            "sent_to_admins": "✅ Information has been successfully sent to admins.",
+            "course_or_branch_not_found": "❌ Sorry, course or branch not found.",
+            "admin_error": "⚠️ Error contacting admin:"
+        }
+    }
+}

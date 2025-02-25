@@ -1,0 +1,14 @@
+{
+    "entry_buttons": {
+        "uzbek": {"courses": "Kurslar", "about_us": "🗒 Biz haqimizda"},
+        "russian": {"courses": "Курсы", "about_us": "🗒 О нас"},
+        "english": {"courses": "Courses", "about_us": "🗒 About us"}
+    },
+
+    "entry_labels": {
+        "uzbek": "Menyu",
+        "russian": "Меню",
+        "english": "Menu"
+    }
+}
+

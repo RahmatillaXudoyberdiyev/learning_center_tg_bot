@@ -1,0 +1,31 @@
+{
+    "about_us": {
+        "uzbek": {
+            "title": "Biz haqimizda",
+            "text": "Team learning markazi\n\nBiz bilan eng yuqori cho‘qqilarga yetishing.\nTel: +998 99 333 99 11"
+        },
+        "russian": {
+            "title": "О нас",
+            "text": "Учебный центр Team\n\nДостигайте высочайших вершин с нами.\nТел: +998 99 333 99 11"
+        },
+        "english": {
+            "title": "About Us",
+            "text": "Team learning center\n\nReach the highest peaks with us.\nTel: +998 99 333 99 11"
+        }
+    },
+    "contact_buttons": {
+        "uzbek": {
+            "contact": "📞 Aloqaga chiqish",
+            "home": "🏠 Bosh sahifaga qaytish"
+        },
+        "russian": {
+            "contact": "📞 Связаться",
+            "home": "🏠 Вернуться на главную"
+        },
+        "english": {
+            "contact": "📞 Contact us",
+            "home": "🏠 Return to home"
+        }
+    }
+
+}

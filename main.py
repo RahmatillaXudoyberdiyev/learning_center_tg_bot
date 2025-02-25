@@ -11,7 +11,7 @@ from user_side.functions.entry_section import entry_section_function
 from user_side.functions.list_based_section import show_course_function, show_region_function, show_branch_function, \
 	show_info, go_back_function
 from user_side.functions.contact_section import about_us_handler,get_contact_info
-from user_side.functions.registration_section import registation_fullname, registation_phone_number, registration_verification, send_info_to_admins
+from user_side.functions.registration_section import registration_fullname, registration_phone_number, registration_verification, send_info_to_admins
 # Foydalanuvchi qismi statelari
 from user_side.states.process_track_state import ProcessTrack
 
@@ -46,6 +46,16 @@ from config import ADMIN_IDS
 
 dp = Dispatcher()
 
+# Constants
+HOME_TEXTS = ["🏠 Bosh sahifaga qaytish", "🏠 Вернуться на главную", "🏠 Return to home"]  
+BACK_TEXTS = ["⏮ Ortga qaytish", "⏮ Назад", "⏮ Back"]  
+COURSES_TEXTS = ["Kurslar", "Курсы", "Courses"]
+REGISTER_TEXTS = ["✍️ Ro'yxatdan o'tish", "✍️ Регистрация", "✍️ Register"]  
+CONFIRM_TEXTS = ["✅ Tasdiqlash", "✅ Подтвердить", "✅ Confirm"]  
+RESTART_TEXTS = ["🔄 Boshidan boshlash", "🔄 Начать заново", "🔄 Restart"]  
+ABOUT_US_TEXTS = ["🗒 Biz haqimizda", "🗒 О нас", "🗒 About us"]
+CONTACT_TEXTS = ["📞 Aloqaga chiqish", "📞 Связаться", "📞 Contact us"]
+
 
 
 # main dasturni yurgazuvchi funksiya
@@ -61,8 +71,8 @@ async def main():
 
 
 	# Begzod Turdibekov
-	dp.message.register(home_action_function, F.text == "🏠 Bosh sahifaga qaytish", check_admin_state())
-	dp.message.register(admin_go_back_function,F.from_user.id.in_(ADMIN_IDS), F.text == "⏮ Ortga qaytish")
+	dp.message.register(home_action_function, F.text.in_(HOME_TEXTS), check_admin_state())
+	dp.message.register(admin_go_back_function,F.from_user.id.in_(ADMIN_IDS), F.text.in_(BACK_TEXTS))
 
 
 	dp.message.register(admin_add_branch_function, AdminProcessTrack.ask_add_branch_name, F.text == "➕ Qo'shish")
@@ -130,30 +140,33 @@ async def main():
 	#Begzod Turdibekov
 
     # Kurslar bo'limi
-	dp.message.register(entry_section_function, F.text == '🏠 Bosh sahifaga qaytish', ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(entry_section_function, F.text.in_(HOME_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
 
     # Ortga tugmalari
-	dp.message.register(go_back_function, ProcessTrack.course, F.text ==  '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS))  # Back to menu
-	dp.message.register(go_back_function, ProcessTrack.region, F.text == '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS))  # Back to courses list
-	dp.message.register(go_back_function, ProcessTrack.branch, F.text == '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS))  # Back to region list
-	dp.message.register(go_back_function, ProcessTrack.info, F.text == '⏮ Ortga qaytish', ~F.from_user.id.in_(ADMIN_IDS)) # Back to brach list
+	dp.message.register(go_back_function, ProcessTrack.course, F.text.in_(BACK_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))  # Back to menu
+	dp.message.register(go_back_function, ProcessTrack.region, F.text.in_(BACK_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))  # Back to courses list
+	dp.message.register(go_back_function, ProcessTrack.branch, F.text.in_(BACK_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))  # Back to region list
+	dp.message.register(go_back_function, ProcessTrack.info, F.text.in_(BACK_TEXTS), ~F.from_user.id.in_(ADMIN_IDS)) # Back to brach list
 
     # Kurs tanlash va regionlarni chiqarish
-	dp.message.register(show_course_function, F.text == 'Kurslar', ~F.from_user.id.in_(ADMIN_IDS))
+
+	dp.message.register(show_course_function, F.text.in_(COURSES_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
 	dp.message.register(show_region_function, check_in_course(), ProcessTrack.course, ~F.from_user.id.in_(ADMIN_IDS))
 	dp.message.register(show_branch_function, check_in_region(), ProcessTrack.region, ~F.from_user.id.in_(ADMIN_IDS))
-	dp.message.register(show_info, ProcessTrack.branch, F.text != "🔄 Boshidan boshlash", ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(show_info, ProcessTrack.branch, ~F.text.in_(RESTART_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
 
 	# Munisa Akbarovna
-	dp.message.register(registation_fullname, F.text == "✍️ Ro'yxatdan o'tish", ~F.from_user.id.in_(ADMIN_IDS))
-	dp.message.register(registation_phone_number, ProcessTrack.fullname, ~F.from_user.id.in_(ADMIN_IDS))
-	dp.message.register(send_info_to_admins, F.text == "✅ Tastiqlash", ~F.from_user.id.in_(ADMIN_IDS))
-	dp.message.register(show_info, F.text == "🔄 Boshidan boshlash", ~F.from_user.id.in_(ADMIN_IDS))
+
+	dp.message.register(registration_fullname, F.text.in_(REGISTER_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(registration_phone_number, ProcessTrack.fullname, ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(send_info_to_admins, F.text.in_(CONFIRM_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(show_info, F.text.in_(RESTART_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
 	dp.message.register(registration_verification, ProcessTrack.phone_number, ~F.from_user.id.in_(ADMIN_IDS))
 	
 	# Marjona Sultonova
-	dp.message.register(about_us_handler, F.text == "🗒 Biz haqimizda", ~F.from_user.id.in_(ADMIN_IDS))
-	dp.message.register(get_contact_info, F.text == "📞 Aloqaga chiqish", ~F.from_user.id.in_(ADMIN_IDS))
+
+	dp.message.register(about_us_handler, F.text.in_(ABOUT_US_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
+	dp.message.register(get_contact_info, F.text.in_(CONTACT_TEXTS), ~F.from_user.id.in_(ADMIN_IDS))
 
 
 	await bot.set_my_commands([

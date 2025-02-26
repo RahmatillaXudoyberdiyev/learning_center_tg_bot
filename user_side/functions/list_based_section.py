@@ -257,7 +257,7 @@ async def go_back_function(message: Message, state: FSMContext):
             elif message.text == '🇺🇿 Uz': language = 'uzbek' 
             else: language = 'uzbek'
         await state.update_data(current_language=language)
-        await message.answer(translate_into("./user_side/translations/entry_translations.json", data2, "entry_labels"), reply_markup=get_entry_keyboard(data))
+        await message.answer(translate_into("./user_side/translations/entry_translations.json", data, "entry_labels"), reply_markup=get_entry_keyboard(data))
         await state.set_state(ProcessTrack.chosen_menu)
     elif current_state == ProcessTrack.region: # Hozir state = region bo'lsa, bitta ortga qaytish kurslar bo'limiga bo'ladi.
         print(message.text)

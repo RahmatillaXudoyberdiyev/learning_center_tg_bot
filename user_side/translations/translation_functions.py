@@ -5,4 +5,4 @@ def translate_into(path, data, key=None):
         language = data.get('current_language', 'Uzbek')  
         if key:
             return translations[key][language]
-        return translations      
+        return translations

@@ -9,6 +9,12 @@ from user_side.translations.translation_functions import translate_into
 # Rahmatilla Xudoyberdiyev
 # Kirish qismi funksiyasi
 async def entry_section_function(message: Message, state: FSMContext):
+	"""Foydalanuvchi uchun kirish bo'limini boshqaradi va tilni aniqlaydi.
+
+    FSM holatidan joriy tilni oladi yoki foydalanuvchi tanlagan tilga qarab yangi tilni
+    o'rnatadi, so'ng tarjimani yuklab, kirish menyusini klaviatura bilan jo'natadi.
+    Holatni 'chosen_menu' ga o'rnatadi.
+    """
 	data1 = await state.get_data()
 	await state.clear()
 	if curr_language:=data1.get("current_language"): 

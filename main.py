@@ -13,6 +13,12 @@ dp = Dispatcher()
 
 # main dasturni yurgazuvchi funksiya
 async def main():
+	"""Telegram botni ishga tushirish va sozlash.
+
+    Ushbu funksiya API token yordamida botni ishlatadi, admin va foydalanuvchi
+    routerlarini ulaydi, maxsus bot buyruqlarini ro'yxatga oladi va yangilanishlarni
+    polling qilishni boshlaydi.
+    """
 	bot = Bot(token = API_TOKEN)
 
 	dp.include_router(admin_panel.dp)

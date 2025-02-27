@@ -26,6 +26,15 @@ connection_pool = mysql.connector.pooling.MySQLConnectionPool(
 )
 
 def get_course_and_branch_ids(course_name, branch_name):
+    """Kurs va filial IDlarini ma'lumotlar bazasidan oladi.
+
+    Args:
+        course_name (str): Kurs nomi.
+        branch_name (str): Filial nomi.
+
+    Returns:
+        tuple: (course_id, branch_id) agar topilsa, aks holda (None, None).
+    """
     connection = connection_pool.get_connection()
     cursor = connection.cursor()
     
@@ -46,6 +55,16 @@ def get_course_and_branch_ids(course_name, branch_name):
 
 
 def insert_user_data(fullname, phone_number, username, t_id, course_id, branch_id):
+    """Foydalanuvchi ma'lumotlarini ma'lumotlar bazasiga qo'shadi.
+
+    Args:
+        fullname (str): Foydalanuvchi ismi va familiyasi.
+        phone_number (str): Foydalanuvchi telefon raqami.
+        username (str): Telegram username, agar mavjud bo'lmasa bo'sh qator.
+        t_id (int): Telegram foydalanuvchi IDsi.
+        course_id (int): Kurs IDsi.
+        branch_id (int): Filial IDsi.
+    """
     connection = connection_pool.get_connection()
     cursor = connection.cursor()
 
@@ -62,6 +81,10 @@ def insert_user_data(fullname, phone_number, username, t_id, course_id, branch_i
 
 
 async def registration_fullname(message: Message, state: FSMContext):
+    """Ro'yxatdan o'tish uchun foydalanuvchidan ism va familiyani so'raydi.
+
+    Tarjima faylidan matnni oladi va klaviaturasiz xabar jo'natadi, holatni 'fullname' ga o'rnatadi.
+    """
     data = await state.get_data()
     translations = translate_into("./user_side/translations/registration_translations.json", data, "registration_messages")
 
@@ -72,6 +95,10 @@ async def registration_fullname(message: Message, state: FSMContext):
     await state.set_state(ProcessTrack.fullname)
 
 async def registration_phone_number(message: Message, state: FSMContext):
+    """Telefon raqamini so'rash uchun foydalanuvchi ma'lumotlarini tekshiradi.
+
+    Agar ism va familiya to'g'ri kiritilgan bo'lsa, telefon raqamini so'raydi, aks holda xato xabarini jo'natadi.
+    """
     data = await state.get_data()
     translations = translate_into("./user_side/translations/registration_translations.json", data, "registration_messages")
 
@@ -85,6 +112,14 @@ async def registration_phone_number(message: Message, state: FSMContext):
 import re
 
 def phone_number_answer(phone_number):
+    """Telefon raqamining to'g'ri formatda ekanligini tekshiradi.
+
+    Args:
+        phone_number (str): Tekshiriladigan telefon raqami.
+
+    Returns:
+        bool: Raqam to'g'ri bo'lsa True, aks holda False.
+    """
     # Regex qoidasi
     uz_phone_regex = r'\d{9}$'
     # Tekshirish
@@ -92,6 +127,11 @@ def phone_number_answer(phone_number):
 
 
 async def registration_verification(message: Message, state: FSMContext):
+    """Foydalanuvchi kiritgan telefon raqamini tekshiradi va tasdiqlash uchun ma'lumotlarni ko'rsatadi.
+
+    Telefon raqami to'g'ri bo'lsa, tasdiqlash klaviaturasini jo'natadi, aks holda xato xabarini yuboradi.
+    """
+
     data = await state.get_data()
     translations = translate_into("./user_side/translations/registration_translations.json", data, "registration_messages")
 
@@ -110,6 +150,10 @@ async def registration_verification(message: Message, state: FSMContext):
         await message.answer(translations["invalid_phone"])
 
 async def send_info_to_admins(message: Message, state: FSMContext):
+    """Ro'yxatdan o'tgan foydalanuvchi ma'lumotlarini adminlarga yuboradi va menyuga qaytaradi.
+
+    Ma'lumotlarni bazaga yozadi, adminlarga xabar jo'natadi, so'ng foydalanuvchini kirish menyusiga yo'naltiradi.
+    """
     data = await state.get_data()
     translations = translate_into("./user_side/translations/registration_translations.json", data, "entry_labels")
     

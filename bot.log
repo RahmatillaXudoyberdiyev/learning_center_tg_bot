@@ -1,0 +1,23 @@
+2025-03-01 06:50:54,958 - __main__ - INFO - Bot ishga tushdi!
+2025-03-01 06:50:55,904 - aiogram.dispatcher - INFO - Start polling
+2025-03-01 06:50:56,037 - aiogram.dispatcher - INFO - Run polling for bot @forlearningcenterbot id=8199482266 - "O'quv markaz."
+2025-03-01 06:50:56,726 - aiogram.event - INFO - Update id=308045477 is handled. Duration 500 ms by bot id=8199482266
+2025-03-01 06:50:56,736 - aiogram.event - INFO - Update id=308045478 is handled. Duration 500 ms by bot id=8199482266
+2025-03-01 06:51:03,182 - aiogram.event - INFO - Update id=308045479 is handled. Duration 234 ms by bot id=8199482266
+2025-03-01 06:51:09,496 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-01 06:51:09,752 - aiogram.dispatcher - INFO - Polling stopped for bot @forlearningcenterbot id=8199482266 - "O'quv markaz."
+2025-03-01 06:52:04,930 - __main__ - INFO - Bot ishga tushdi!
+2025-03-01 06:52:05,699 - aiogram.dispatcher - INFO - Start polling
+2025-03-01 06:52:05,832 - aiogram.dispatcher - INFO - Run polling for bot @forlearningcenterbot id=8199482266 - "O'quv markaz."
+2025-03-01 06:52:06,456 - aiogram.event - INFO - Update id=308045480 is handled. Duration 452 ms by bot id=8199482266
+2025-03-01 06:52:27,324 - aiogram.event - INFO - Update id=308045481 is handled. Duration 452 ms by bot id=8199482266
+2025-03-01 06:57:01,122 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-01 06:57:01,368 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [Errno 1] [SSL: APPLICATION_DATA_AFTER_CLOSE_NOTIFY] application data after close notify (_ssl.c:2706)
+2025-03-01 06:57:01,368 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8199482266)
+2025-03-01 06:57:01,369 - aiogram.dispatcher - INFO - Polling stopped for bot @forlearningcenterbot id=8199482266 - "O'quv markaz."
+2025-03-01 06:58:02,680 - __main__ - INFO - Bot ishga tushdi!
+2025-03-01 06:58:03,640 - aiogram.dispatcher - INFO - Start polling
+2025-03-01 06:58:05,001 - aiogram.dispatcher - INFO - Run polling for bot @forlearningcenterbot id=8199482266 - "O'quv markaz."
+2025-03-01 06:58:05,638 - aiogram.event - INFO - Update id=308045482 is handled. Duration 484 ms by bot id=8199482266
+2025-03-01 07:04:12,824 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-01 07:04:13,088 - aiogram.dispatcher - INFO - Polling stopped for bot @forlearningcenterbot id=8199482266 - "O'quv markaz."
